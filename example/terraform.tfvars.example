@@ -1,0 +1,24 @@
+# Even though we exclude terraform.tfvars from version control in the
+# .gitignore file, some variables are sensitive enought that you may
+# want to keep them out of the source directories altogether.  For these,
+# you can set environment variables beginning with TF_VAR_ as an alternate
+# way of setting these variables automatically.
+#
+# Example:
+#   export TF_VAR_pm_api_url=""
+#   export TF_VAR_pm_api_token_secret=""
+#   export TF_VAR_pm_api_token_id=""
+
+hostname         = "test"
+cloud_image      = "debian12-cloud"
+target_node      = "pve1"
+storage          = "local-lvm"
+vlan             = -1   # -1 means "no VLAN"
+ciuser           = "ansible"
+cipassword       = "my_strong_p@ssw0rd"  # Consider exporting this too
+ssh_pubkey_file  = "~/keys/ansible.pub"
+ssh_privkey_file = "~/keys/ansible"
+ip               = "10.0.0.99"
+ipconfig0        = "gw=10.0.0.254,ip=10.0.0.99/24"
+searchdomain     = "example.com"
+nameserver       = "10.0.0.254"
