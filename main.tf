@@ -1,0 +1,97 @@
+terraform {
+  required_version = "~> 1.6.0"
+  required_providers {
+    proxmox = {
+      source  = "Telmate/proxmox"
+      version = "2.9.14"
+    }
+  }
+}
+
+# See the argument reference documentation for how to configure the Proxmox
+# Provider for Terraform:
+# https://github.com/Telmate/terraform-provider-proxmox/blob/master/docs/index.md
+provider "proxmox" {
+  pm_api_url          = var.pm_api_url
+  pm_api_token_secret = var.pm_api_token_secret
+  pm_api_token_id     = var.pm_api_token_id
+  pm_tls_insecure     = true
+  pm_log_enable       = true
+  pm_log_file         = "terraform-plugin-proxmox.log"
+  pm_debug            = true
+  pm_log_levels = {
+    _default    = "debug"
+    _capturelog = ""
+  }
+}
+
+#==========================================
+# Proxmox VM
+#==========================================
+resource "proxmox_vm_qemu" "cloud_init" {
+  name            = var.hostname
+  clone           = var.cloud_image
+  target_node     = var.target_node
+  vmid            = var.vmid
+  agent           = 0
+  bios            = "ovmf"
+  boot            = "order=scsi0;net0;ide2"
+  full_clone      = var.full_clone
+  qemu_os         = "l26"
+  cores           = var.cores
+  memory          = var.memory
+  cpu             = "x86-64-v2-AES"
+  scsihw          = "virtio-scsi-single"
+  ssh_user        = var.ciuser
+  ssh_private_key = file(var.ssh_privkey_file)
+  oncreate        = true
+  disk {
+    type        = "scsi"
+    storage     = var.storage
+    size        = "2G"
+    format      = "raw"
+    cache       = "none"
+    backup      = true
+    iothread    = 1
+    replicate   = 0
+    ssd         = 1
+    discard     = "on"
+    mbps        = 0
+    mbps_rd     = 0
+    mbps_rd_max = 0
+    mbps_wr     = 0
+    mbps_wr_max = 0
+  }
+  vga {
+    type   = "qxl"
+    memory = 32
+  }
+  network {
+    model  = "virtio"
+    bridge = "vmbr0"
+    tag    = var.vlan
+  }
+  os_type = "cloud-init"
+  #
+  # cloud-init specific vars
+  #
+  ci_wait      = 30
+  ciuser       = var.ciuser
+  cipassword   = var.cipassword
+  sshkeys      = file(var.ssh_pubkey_file)
+  ipconfig0    = var.ipconfig0
+  searchdomain = var.searchdomain
+  nameserver   = var.nameserver
+
+  provisioner "remote-exec" {
+    inline = [
+      "cloud-init status --wait"
+    ]
+    connection {
+      host  = var.ip
+      type  = "ssh"
+      user  = var.ciuser
+      agent = true
+    }
+  }
+}
