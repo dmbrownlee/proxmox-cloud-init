@@ -46,5 +46,10 @@ module "test" {
 }
 
 output "test" {
-  value = module.test[*].vm
+  value = module.test.vm
+}
+
+output "resources" {
+  value     = module.test.resources
+  sensitive = true
 }
