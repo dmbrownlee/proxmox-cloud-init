@@ -6,3 +6,7 @@ output "vm" {
     ciuser   = var.ciuser
   }
 }
+
+output "resources" {
+  proxmox_vm_qemu = proxmox_vm_qemu.cloud_init
+}
