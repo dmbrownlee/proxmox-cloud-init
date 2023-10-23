@@ -8,5 +8,9 @@ output "vm" {
 }
 
 output "resources" {
-  proxmox_vm_qemu = proxmox_vm_qemu.cloud_init
+  value = {
+    proxmox_vm_qemu = [
+      proxmox_vm_qemu.cloud_init
+    ]
+  }
 }
