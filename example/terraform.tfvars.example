@@ -13,6 +13,7 @@ hostname         = "test"
 cloud_image      = "debian12-cloud"
 target_node      = "pve1"
 storage          = "local-lvm"
+bridge           = "vmbr0"
 vlan             = -1   # -1 means "no VLAN"
 ciuser           = "ansible"
 cipassword       = "my_strong_p@ssw0rd"  # Consider exporting this too

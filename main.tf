@@ -51,7 +51,7 @@ resource "proxmox_vm_qemu" "cloud_init" {
   }
   network {
     model  = "virtio"
-    bridge = "vmbr0"
+    bridge = var.bridge
     tag    = var.vlan
   }
   os_type = "cloud-init"

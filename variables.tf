@@ -93,10 +93,16 @@ variable "memory" {
   default     = 2048
 }
 
+variable "bridge" {
+  description = "Bridge to which to patch the VM"
+  type        = string
+  default     = "vmbr0"
+}
+
 variable "vlan" {
   description = "VLAN ID"
   type        = number
-  #default     = -1
+  default     = -1
 }
 
 variable "ipconfig0" {
