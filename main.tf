@@ -31,7 +31,7 @@ resource "proxmox_vm_qemu" "cloud_init" {
   disk {
     type        = "scsi"
     storage     = var.storage
-    size        = "2G"
+    size        = var.disk_size
     format      = "raw"
     cache       = "none"
     backup      = true

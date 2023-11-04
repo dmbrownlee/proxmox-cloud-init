@@ -122,3 +122,9 @@ variable "storage" {
   type        = string
   #default     = "local-lvm"
 }
+
+variable "disk_size" {
+  description = "Size of the primary disk"
+  type        = string
+  default     = "2G"
+}

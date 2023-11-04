@@ -26,7 +26,8 @@ provider "proxmox" {
 }
 
 module "test" {
-  source              = "git@github.com:dmbrownlee/proxmox-cloud-init.git"
+  #source              = "git@github.com:dmbrownlee/proxmox-cloud-init.git"
+  source              = "../"
   pm_api_url          = var.pm_api_url
   pm_api_token_secret = var.pm_api_token_secret
   pm_api_token_id     = var.pm_api_token_id
@@ -43,6 +44,7 @@ module "test" {
   ipconfig0           = var.ipconfig0
   searchdomain        = var.searchdomain
   nameserver          = var.nameserver
+  disk_size           = var.disk_size
 }
 
 output "test" {

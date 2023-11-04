@@ -33,6 +33,12 @@ variable "storage" {
   type        = string
 }
 
+variable "bridge" {
+  description = "Bridge to which to patch the VM"
+  type        = string
+  default     = "vmbr0"
+}
+
 variable "vlan" {
   description = "The VLAN tag for the VM's primary interface"
   type        = number
@@ -76,4 +82,10 @@ variable "searchdomain" {
 variable "nameserver" {
   description = "The cloud-init DNS nameserver"
   type        = string
+}
+
+variable "disk_size" {
+  description = "Size of the primary disk"
+  type        = string
+  default     = "2G"
 }
